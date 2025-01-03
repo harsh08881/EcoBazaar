@@ -1,5 +1,13 @@
 const mongoose = require("mongoose");
-const connectToMongoDB = async (uri) => {
+
+const connectToMongoDB = async () => {
+  const uri = process.env.MONGO_URI;
+
+  if (!uri) {
+    console.error("MongoDB URI is not defined in the environment variables.");
+    process.exit(1);
+  }
+
   try {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
@@ -8,12 +16,8 @@ const connectToMongoDB = async (uri) => {
     console.log("Connected to MongoDB!");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
-    process.exit(1); // Exit the process with an error code
+    process.exit(1);
   }
 };
-
-// Example usage
-const uri = "your_mongodb_connection_string";
- 
 
 module.exports = connectToMongoDB;

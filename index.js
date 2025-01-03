@@ -1,23 +1,19 @@
 const express = require("express");
-// const routes = require("./routes/index");
-const connectToMongoDB = require('./config/connectdb');
-
-connectToMongoDB();
+require("dotenv").config(); // Load environment variables
+const connectToMongoDB = require("./config/connectdb");
+const router = require('./src/routes/user');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3002;
 
-// Middleware to parse JSON
-app.use(express.json());
+// Connect to MongoDB
+// connectToMongoDB();
 
-// Use routes from the routes/index.js file
-// app.use("/", routes);
+app.get("/", (req, res) => {
+  res.send("Server is running successfully!");
+});
 
-app.get('/', (req, res)=>{
-    res.send("sjndn")
-})
-
-// Start the server
+app.use('/user', router)
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
