@@ -4,10 +4,10 @@ const connectToMongoDB = require("./config/connectdb");
 const router = require('./src/routes/user');
 
 const app = express();
-const PORT = 3002;
+const PORT = 5000;
 
 // Connect to MongoDB
-// connectToMongoDB();
+connectToMongoDB();
 
 app.get("/", (req, res) => {
   res.send("Server is running successfully!");
