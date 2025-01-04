@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/usersControllers");
+const validateFields = require('../middleware/checkfield');
 
 // GET /users/profile route
 router.post('/login', userController.loginUser);
 router.get("/profile", userController.getProfile);
-router.post('/register', userController.saveUserData);
+router.post('/register', validateFields(["email", "password"]), userController.saveUserData);
 
 
 module.exports = router;
