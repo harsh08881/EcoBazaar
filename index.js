@@ -3,11 +3,13 @@ require("dotenv").config();
 const connectToMongoDB = require("./config/connectdb");
 const router = require('./src/routes/user');
 const errorHandler = require('./src/middleware/errorhandler');
+const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 5001; 
+const PORT = process.env.PORT || 5003; 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler);
+app.use(cors()); 
 
 connectToMongoDB();
 
