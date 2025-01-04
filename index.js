@@ -1,16 +1,14 @@
 const express = require("express");
-require("dotenv").config(); // Load environment variables
+require("dotenv").config(); 
 const connectToMongoDB = require("./config/connectdb");
 const router = require('./src/routes/user');
-
+const errorHandler = require('./src/middleware/errorhandler');
 const app = express();
-const PORT = 5000;
-
+const PORT = process.env.PORT || 5001; 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(errorHandler);
 
-
-// Connect to MongoDB
 connectToMongoDB();
 
 app.get("/", (req, res) => {
@@ -18,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/user', router)
+
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
