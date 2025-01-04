@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../modals/userSchema'); 
+const jwt = require('jsonwebtoken');
 
 const mockUserProfile = {
     id: 1,
@@ -76,8 +77,51 @@ const saveUserData = async (req, res) => {
         res.status(500).json({ error: 'Internal server error.' });
     }
 };
+
+
+const JWT_SECRET = process.env.JWT_SECRET || "Harsh";
+
+const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required." });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: "Invalid email or password." });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid email or password." });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({
+      message: "Login successful.",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        profilePhoto: user.profilePhoto,
+      },
+    });
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
   
   module.exports = {
     getProfile,
-    saveUserData
+    saveUserData,
+    loginUser
   };
