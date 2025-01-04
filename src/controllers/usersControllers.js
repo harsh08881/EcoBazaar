@@ -1,22 +1,34 @@
 const bcrypt = require('bcrypt');
 const User = require('../modals/userSchema'); 
 const jwt = require('jsonwebtoken');
-
-const mockUserProfile = {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    age: 30,
-    address: "123 Main St, Anytown, USA"
-  };
+const { JWT_SECRET } = require('../utils/constant');
   
   // Controller function to get user profile
-  const getProfile = (req, res) => {
+  const getProfile = async (req, res) => {
     try {
-      // In a real-world application, fetch the profile data from a database here
+      // `req.user` should contain the user information after the token is verified
+      const user = req.user;
+  
+      // If there's no user found (this shouldn't happen because of the middleware)
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found."
+        });
+      }
+  
+      // You can choose to return only specific fields like email, name, etc.
+      const userProfile = {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        profilePhoto: user.profilePhoto,
+        // Add more fields as needed from the user object
+      };
+  
       res.status(200).json({
         success: true,
-        data: mockUserProfile
+        data: userProfile
       });
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -26,6 +38,7 @@ const mockUserProfile = {
       });
     }
   };
+  
 
 
 // Function to save user data
@@ -79,8 +92,6 @@ const saveUserData = async (req, res) => {
 };
 
 
-const JWT_SECRET = process.env.JWT_SECRET || "Harsh";
-
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -102,8 +113,8 @@ const loginUser = async (req, res, next) => {
       return res.status(401).json({ error: "Invalid email or password." });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    // Generate JWT token with user number
+    const token = jwt.sign({ number: user.number }, JWT_SECRET, { expiresIn: '1h' });
 
     res.status(200).json({
       message: "Login successful.",
@@ -119,6 +130,7 @@ const loginUser = async (req, res, next) => {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
   
   module.exports = {
     getProfile,
