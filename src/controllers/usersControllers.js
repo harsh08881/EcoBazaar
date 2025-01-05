@@ -152,7 +152,6 @@ const addDevice = async (req, res) => {
         message: 'All device details are required.',
       });
     }
-
     
     const newDevice = new Device({
       userId: user._id, 
@@ -177,9 +176,6 @@ const addDevice = async (req, res) => {
     });
   }
 };
-
-module.exports = addDevice;
-
 
   
   module.exports = {
