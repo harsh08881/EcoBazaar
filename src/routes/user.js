@@ -8,6 +8,7 @@ const verifyToken = require('../middleware/authcontroller');
 router.post('/login', userController.loginUser);
 router.get("/profile", verifyToken, userController.getProfile);
 router.post('/register', validateFields(["email", "password"]), userController.saveUserData);
+router.post('/device', verifyToken, userController.addDevice);
 
 
 module.exports = router;

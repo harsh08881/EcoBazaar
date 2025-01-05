@@ -4,7 +4,7 @@ const { JWT_SECRET } = require('../utils/constant'); // Ensure this is correctly
 
 const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1] || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiI5NDQ2NzQ1Njc4IiwiaWF0IjoxNzM2MDYxMDk0LCJleHAiOjE3MzYwNjQ2OTR9.QmEvihao6Ar0ERU9td9cf2zKDpDN15qm1-0G7SODg9U";
+    const token = req.headers.authorization?.split(' ')[1];
     console.log('Token:', token);
 
     if (!token) {

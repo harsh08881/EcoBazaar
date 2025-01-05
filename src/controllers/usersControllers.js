@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../modals/userSchema'); 
+const Device = require('../modals/userDevice');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/constant');
   
@@ -131,9 +132,61 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const addDevice = async (req, res) => {
+  try {
+    // Access user from the request object
+    const user = req.user;
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized. User not found.',
+      });
+    }
+
+    // Extract device details from the request body
+    const { deviceType, os, osVersion, deviceModel } = req.body;
+
+    // Validate input
+    if (!deviceType || !os || !osVersion || !deviceModel) {
+      return res.status(400).json({
+        success: false,
+        message: 'All device details are required.',
+      });
+    }
+
+    // Create and save the device
+    const newDevice = new Device({
+      userId: user._id, // Link the device to the authenticated user
+      deviceType,
+      os,
+      osVersion,
+      deviceModel,
+    });
+
+    await newDevice.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Device added successfully.',
+      device: newDevice,
+    });
+  } catch (error) {
+    console.error('Error adding device:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to add device.',
+    });
+  }
+};
+
+module.exports = addDevice;
+
+
   
   module.exports = {
     getProfile,
     saveUserData,
-    loginUser
+    loginUser,
+    addDevice
   };
