@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true, // Removes extra whitespace
+        trim: true, 
     },
     dob: {
         type: Date,
@@ -39,19 +39,18 @@ const userSchema = new mongoose.Schema({
     },
     profilePhoto: {
         type: String,
-        required: false, // Optional field
+        required: false, 
         validate: {
             validator: function (v) {
-                return /^(http|https):\/\/[^\s$.?#].[^\s]*$/gm.test(v); // Validates URL
+                return /^(http|https):\/\/[^\s$.?#].[^\s]*$/gm.test(v); 
             },
             message: (props) => `${props.value} is not a valid URL!`,
         },
     },
 }, {
-    timestamps: true, // Adds createdAt and updatedAt timestamps
+    timestamps: true,
 });
 
-// Model
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -15,7 +15,7 @@ const validateFields = (requiredFields) => {
         });
       }
   
-      next(); // Proceed to the next middleware or route handler
+      next(); 
     };
   };
   

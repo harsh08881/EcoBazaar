@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../modals/userSchema'); // Adjust path if needed
-const { JWT_SECRET } = require('../utils/constant'); // Ensure this is correctly destructured
+const User = require('../modals/userSchema'); 
+const { JWT_SECRET } = require('../utils/constant'); 
 
 const verifyToken = async (req, res, next) => {
   try {
@@ -13,11 +13,11 @@ const verifyToken = async (req, res, next) => {
 
     console.log('JWT_SECRET:', JWT_SECRET);
 
-    // Verify the token
+  
     const decoded = jwt.verify(token, JWT_SECRET);
     console.log('Decoded Token:', decoded);
 
-    // Find the user by number
+   
     const user = await User.findOne({ number: decoded.number });
     if (!user) {
       console.log('User not found');
@@ -26,10 +26,10 @@ const verifyToken = async (req, res, next) => {
 
     console.log('User Found:', user);
 
-    // Attach the user to the request object
+   
     req.user = user;
 
-    next(); // Proceed to the next middleware
+    next();
   } catch (error) {
     console.error('Error in verifyToken:', error.message);
     return res.status(401).json({ error: 'Invalid or expired token' });

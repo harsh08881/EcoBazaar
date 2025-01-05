@@ -8,19 +8,19 @@ const deviceSchema = new mongoose.Schema({
   },
   deviceType: {
     type: String,
-    required: true // e.g., iPhone, Android, Web
+    required: true 
   },
   os: {
     type: String,
-    required: true // e.g., iOS, Android, Windows
+    required: true 
   },
   osVersion: {
     type: String,
-    required: true // e.g., 14.4, 12.0
+    required: true 
   },
   deviceModel: {
     type: String,
-    required: true // e.g., iPhone 13, Samsung Galaxy S21
+    required: true 
   },
   lastLogin: {
     type: Date,
