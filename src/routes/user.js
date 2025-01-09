@@ -11,6 +11,7 @@ router.get("/profile", verifyToken, userController.getProfile);
 router.post('/register', validateFields(["email", "password"]), userController.saveUserData);
 router.post('/device', verifyToken, userController.addDevice);
 router.get('/menu', verifyToken, menuController.getItem);
+router.get('/profile', verifyToken, userController.getUserData);
 
 
 module.exports = router;

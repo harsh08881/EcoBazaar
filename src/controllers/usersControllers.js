@@ -176,10 +176,41 @@ const addDevice = async (req, res) => {
   }
 };
 
+
+
+// Controller to get user data
+const getUserData = async (req, res) => {
+  try {
+    // Assuming the user is authenticated and user ID is available in req.user
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    // Find user by ID and exclude sensitive fields like password
+    const user = await User.findById(userId).select('-password -__v');
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Respond with user data
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    console.error('Error fetching user data:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
   
   module.exports = {
     getProfile,
     saveUserData,
     loginUser,
-    addDevice
+    addDevice,
+    getUserData
   };
