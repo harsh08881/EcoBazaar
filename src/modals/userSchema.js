@@ -42,6 +42,9 @@ const userSchema = new mongoose.Schema({
         required: false, 
         validate: {
             validator: function (v) {
+                // Allow null or undefined values
+                if (!v) return true;
+                // Validate only non-empty strings
                 return /^(http|https):\/\/[^\s$.?#].[^\s]*$/gm.test(v); 
             },
             message: (props) => `${props.value} is not a valid URL!`,

@@ -44,10 +44,9 @@ const { JWT_SECRET } = require('../utils/constant');
 const saveUserData = async (req, res) => {
     try {
         const { number, email, password, name, dob, profilePhoto } = req.body;
-
+        
         console.log(req.body);
 
-      
         if (!number || !email || !password || !name || !dob) {
             return res.status(400).json({ error: 'All required fields must be provided.' });
         }
