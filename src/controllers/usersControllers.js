@@ -17,6 +17,7 @@ const { JWT_SECRET } = require('../utils/constant');
           message: "User not found."
         });
       }
+      console.log(user);
   
       
       const userProfile = {
@@ -24,6 +25,8 @@ const { JWT_SECRET } = require('../utils/constant');
         email: user.email,
         name: user.name,
         profilePhoto: user.profilePhoto,
+        number: user.number,
+        dob: user.dob,
       };
   
       res.status(200).json({
