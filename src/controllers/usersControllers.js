@@ -189,11 +189,13 @@ const getUserData = async (req, res) => {
     }
 
     // Find user by ID and exclude sensitive fields like password
-    const user = await User.findById(userId).select('-password -__v');
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+    
+   
 
     // Respond with user data
     res.status(200).json({
